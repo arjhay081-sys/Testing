@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin – Bobby's Motorbike Rental</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #f4c430;
+            --gold-dim: rgba(244,196,48,0.12);
+            --gold-border: rgba(244,196,48,0.3);
+            --green: #25D366;
+            --teal: #14b878;
+            --red: #ff6b6b;
+            --orange: #fb923c;
+            --purple: #8b5cf6;
+            --bg: #06090f;
+            --surface: rgba(255,255,255,0.04);
+            --border: rgba(255,255,255,0.09);
+            --muted: #888;
+        }
+
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: #fff; min-height: 100vh; }
+
+        @keyframes spin    { to { transform: rotate(360deg); } }
+        @keyframes fadeUp  { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+        @keyframes pulse   { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+        @keyframes bellRing {
+            0%,100%{transform:rotate(0)} 15%{transform:rotate(-18deg)} 30%{transform:rotate(18deg)}
+            45%{transform:rotate(-10deg)} 60%{transform:rotate(10deg)} 75%{transform:rotate(0)}
+        }
+
+        /* TOPBAR */
+        .topbar { background:rgba(6,9,15,.96); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:200; }
+        .topbar-left { display:flex; align-items:center; gap:.6rem; }
+        .topbar img { height:32px; border-radius:8px; }
+        .topbar-title { font-size:.88rem; font-weight:800; }
+        .topbar-title span { color:var(--gold); }
+        .topbar-right { display:flex; align-items:center; gap:.55rem; }
+        .live-wrap { display:flex; align-items:center; gap:.4rem; }
+        .live-dot { width:8px; height:8px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+        .live-label { color:var(--green); font-size:.68rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; }
+        .icon-btn { background:transparent; border:1px solid var(--border); color:var(--muted); width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; flex-shrink:0; }
+        .icon-btn:hover, .icon-btn.on { border-color:var(--gold-border); color:var(--gold); }
+        .icon-btn svg { width:16px; height:16px; fill:currentColor; }
+        .icon-btn.ring svg { animation:bellRing .6s ease; }
+        .btn-logout { background:rgba(255,107,107,.1); border:1px solid rgba(255,107,107,.3); color:var(--red); padding:.4rem .85rem; border-radius:8px; font-size:.78rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:.35rem; transition:all .2s; }
+        .btn-logout:hover { background:rgba(255,107,107,.2); }
+        .btn-logout svg { width:14px; height:14px; fill:var(--red); }
+
+        /* MAIN */
+        .main { max-width:1100px; margin:0 auto; padding:1.25rem; }
+
+        /* STATS */
+        .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.85rem; margin-bottom:1.25rem; }
+        .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.1rem; display:flex; align-items:center; gap:.9rem; animation:fadeUp .35s ease both; }
+        .stat-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .stat-icon svg { width:18px; height:18px; }
+        .stat-val { font-size:1.7rem; font-weight:900; line-height:1; }
+        .stat-label { color:var(--muted); font-size:.68rem; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+
+        /* CONTROLS */
+        .controls { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.85rem; align-items:center; }
+        .filter-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); padding:.38rem .85rem; border-radius:20px; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:.35rem; }
+        .filter-btn.active { background:var(--gold-dim); border-color:var(--gold-border); color:var(--gold); }
+        .filter-btn .cnt { background:rgba(255,255,255,.08); padding:1px 6px; border-radius:8px; font-size:.68rem; }
+        .filter-btn.active .cnt { background:rgba(244,196,48,.18); }
+        .divider { width:1px; height:24px; background:var(--border); margin:0 .25rem; }
+
+        /* SORT */
+        .sort-wrap { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; flex-wrap:wrap; }
+        .sort-label { color:var(--muted); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+        .sort-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); padding:.38rem .85rem; border-radius:8px; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:.35rem; }
+        .sort-btn.active { background:var(--gold-dim); border-color:var(--gold-border); color:var(--gold); }
+        .sort-btn svg { width:12px; height:12px; fill:currentColor; }
+
+        /* BOOKING CARDS */
+        .list { display:grid; gap:.85rem; }
+        .bcard { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:14px; overflow:hidden; animation:fadeUp .3s ease both; }
+        .bcard.tour { border-left-color:var(--teal); }
+        .bcard.approved { border-left-color:var(--green); }
+        .bcard.rejected { border-left-color:var(--red); }
+
+        .bcard-top { padding:.85rem 1.1rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:.5rem; flex-wrap:wrap; }
+        .bcard-top-left { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+        .badge-type { font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; padding:2px 7px; border-radius:5px; }
+        .badge-type.bike { background:rgba(244,196,48,.12); color:var(--gold); border:1px solid rgba(244,196,48,.3); }
+        .badge-type.tour { background:rgba(20,184,120,.1); color:var(--teal); border:1px solid rgba(20,184,120,.3); }
+        .bid { font-size:.92rem; font-weight:800; }
+        .badge-status { font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; padding:2px 9px; border-radius:20px; }
+        .badge-status.pending  { background:rgba(251,146,60,.12); color:var(--orange); border:1px solid rgba(251,146,60,.3); }
+        .badge-status.approved { background:rgba(37,211,102,.1);  color:var(--green);  border:1px solid rgba(37,211,102,.3); }
+        .badge-status.rejected { background:rgba(255,107,107,.1); color:var(--red);    border:1px solid rgba(255,107,107,.3); }
+        .bcard-right { display:flex; align-items:center; gap:.6rem; }
+        .card-time { color:var(--muted); font-size:.7rem; white-space:nowrap; }
+        .btn-expand { background:transparent; border:none; color:var(--muted); font-size:.75rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:.25rem; padding:.2rem 0; transition:color .2s; }
+        .btn-expand:hover { color:var(--gold); }
+        .btn-expand svg { width:13px; height:13px; fill:currentColor; transition:transform .25s; }
+        .btn-expand.open svg { transform:rotate(180deg); }
+
+        .bcard-body { padding:.85rem 1.1rem; display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
+        .cf label { display:block; color:var(--muted); font-size:.63rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
+        .cf span  { color:#fff; font-size:.85rem; font-weight:600; }
+        .cf span.gold { color:var(--gold); }
+        .cf span.teal { color:var(--teal); }
+
+        .extra { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .extra.open { max-height:500px; }
+        .extra-inner { padding:.85rem 1.1rem; border-top:1px solid var(--border); display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
+
+        /* ACTIONS */
+        .bcard-actions { padding:.75rem 1.1rem; border-top:1px solid var(--border); display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+        .btn-approve { background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.35); color:var(--green); padding:.5rem 1rem; border-radius:8px; font-weight:700; font-size:.8rem; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:.35rem; }
+        .btn-approve:hover { background:rgba(37,211,102,.2); }
+        .btn-reject  { background:rgba(255,107,107,.1); border:1px solid rgba(255,107,107,.3); color:var(--red); padding:.5rem 1rem; border-radius:8px; font-weight:700; font-size:.8rem; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:.35rem; }
+        .btn-reject:hover { background:rgba(255,107,107,.2); }
+        .btn-dl { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); padding:.5rem 1rem; border-radius:8px; font-weight:700; font-size:.8rem; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:.35rem; margin-left:auto; }
+        .btn-dl:hover { background:rgba(244,196,48,.2); }
+        .btn-del { background:transparent; border:1px solid rgba(255,107,107,.15); color:#555; padding:.5rem .65rem; border-radius:8px; font-size:.8rem; cursor:pointer; transition:all .2s; display:flex; align-items:center; }
+        .btn-del:hover { background:rgba(255,107,107,.1); border-color:rgba(255,107,107,.4); color:var(--red); }
+        .btn-approve svg,.btn-reject svg,.btn-dl svg,.btn-del svg { width:14px; height:14px; fill:currentColor; }
+        .note-text { color:var(--muted); font-size:.76rem; font-style:italic; }
+        .btn-paid { background:linear-gradient(135deg,#14b878,#0ea566); color:#fff; border:none; padding:.5rem 1rem; border-radius:8px; font-weight:700; font-size:.8rem; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:.35rem; }
+        .btn-paid:hover { opacity:.88; transform:translateY(-1px); }
+        .btn-paid svg { width:14px; height:14px; fill:#fff; }
+        .paid-badge { background:rgba(20,184,120,.15); border:1px solid rgba(20,184,120,.4); color:var(--teal); padding:.45rem .9rem; border-radius:8px; font-size:.75rem; font-weight:700; display:inline-flex; align-items:center; gap:.4rem; }
+        .paid-badge svg { width:13px; height:13px; fill:var(--teal); }
+        .rental-badge { padding:.45rem .9rem; border-radius:8px; font-size:.75rem; font-weight:700; display:inline-flex; align-items:center; gap:.4rem; background:rgba(139,92,246,.15); border:1px solid rgba(139,92,246,.4); color:var(--purple); }
+        .rental-badge.over { background:rgba(255,107,107,.12); border-color:rgba(255,107,107,.4); color:var(--red); }
+        .rental-badge svg { width:13px; height:13px; fill:currentColor; }
+
+        /* STATES */
+        .state-box { text-align:center; padding:3.5rem 1.5rem; color:var(--muted); }
+        .state-box svg { width:40px; height:40px; fill:currentColor; opacity:.3; display:block; margin:0 auto 1rem; }
+        .state-box h3 { font-size:1rem; margin-bottom:.4rem; color:#666; }
+        .spinner-wrap { text-align:center; padding:3rem; }
+        .spinner { width:30px; height:30px; border:3px solid rgba(244,196,48,.15); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 1rem; }
+
+        /* MODAL */
+        .overlay { position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:300; padding:1rem; }
+        .overlay.show { display:flex; }
+        .modal { background:#0d1117; border:1px solid var(--border); border-radius:18px; padding:1.75rem; max-width:440px; width:100%; position:relative; animation:fadeUp .25s ease; }
+        .modal::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:18px 18px 0 0; }
+        .modal.approve::before { background:linear-gradient(90deg,transparent,var(--green),transparent); }
+        .modal.reject::before  { background:linear-gradient(90deg,transparent,var(--red),transparent); }
+        .modal h3 { font-size:1.1rem; font-weight:800; margin-bottom:.35rem; }
+        .modal h3.g { color:var(--green); }
+        .modal h3.r { color:var(--red); }
+        .modal p { color:var(--muted); font-size:.83rem; margin-bottom:1.1rem; }
+        .modal textarea { width:100%; background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:10px; padding:.8rem; color:#fff; font-size:.85rem; resize:vertical; min-height:80px; outline:none; font-family:inherit; transition:border-color .2s; }
+        .modal textarea:focus { border-color:var(--gold-border); }
+        .modal textarea::placeholder { color:#444; }
+        .modal-btns { display:flex; gap:.65rem; margin-top:1.1rem; }
+        .btn-cancel { background:transparent; border:1px solid var(--border); color:var(--muted); padding:.8rem 1.1rem; border-radius:9px; cursor:pointer; font-size:.88rem; transition:all .2s; }
+        .btn-cancel:hover { border-color:rgba(255,255,255,.2); color:#fff; }
+        .btn-go-approve { flex:1; background:linear-gradient(135deg,#25D366,#1ebe57); color:#fff; border:none; padding:.8rem; border-radius:9px; font-weight:800; cursor:pointer; font-size:.92rem; transition:opacity .2s; }
+        .btn-go-approve:hover { opacity:.88; }
+        .btn-go-reject { flex:1; background:linear-gradient(135deg,#ff6b6b,#e05555); color:#fff; border:none; padding:.8rem; border-radius:9px; font-weight:800; cursor:pointer; font-size:.92rem; transition:opacity .2s; }
+        .btn-go-reject:hover { opacity:.88; }
+        .btn-go-approve:disabled,.btn-go-reject:disabled { opacity:.5; cursor:not-allowed; }
+
+        /* RECEIPT (off-screen) */
+        #rc-wrap { position:fixed; left:-9999px; top:0; width:680px; z-index:-1; font-family:'Segoe UI',sans-serif; }
+
+        @media(max-width:700px) {
+            .stats-grid { grid-template-columns:1fr 1fr; }
+            .bcard-body,.extra-inner { grid-template-columns:1fr 1fr; }
+            .main { padding:.85rem; }
+            .topbar-title { display:none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <img src="BMR.png" alt="BMR">
+        <div class="topbar-title">Bobby's <span>Admin</span></div>
+    </div>
+    <div class="topbar-right">
+        <div class="live-wrap">
+            <div class="live-dot"></div>
+            <span class="live-label">Live</span>
+        </div>
+        <button class="icon-btn" id="bell-btn" title="Notifications OFF" onclick="toggleNotif()">
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </button>
+        <button class="btn-logout" onclick="doLogout()">
+            <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            Logout
+        </button>
+    </div>
+</div>
+
+<div class="main">
+    <div class="stats-grid">
+        <div class="stat-card" style="animation-delay:.05s">
+            <div class="stat-icon" style="background:rgba(244,196,48,.1);border:1px solid rgba(244,196,48,.2)">
+                <svg viewBox="0 0 24 24" style="fill:#f4c430"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            </div>
+            <div><div class="stat-val" id="s-total">–</div><div class="stat-label">Total</div></div>
+        </div>
+        <div class="stat-card" style="animation-delay:.1s">
+            <div class="stat-icon" style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2)">
+                <svg viewBox="0 0 24 24" style="fill:#fb923c"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <div><div class="stat-val" id="s-pending">–</div><div class="stat-label">Pending</div></div>
+        </div>
+        <div class="stat-card" style="animation-delay:.15s">
+            <div class="stat-icon" style="background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.2)">
+                <svg viewBox="0 0 24 24" style="fill:#25D366"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+            </div>
+            <div><div class="stat-val" id="s-approved">–</div><div class="stat-label">Approved</div></div>
+        </div>
+        <div class="stat-card" style="animation-delay:.2s">
+            <div class="stat-icon" style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2)">
+                <svg viewBox="0 0 24 24" style="fill:#ff6b6b"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
+            </div>
+            <div><div class="stat-val" id="s-rejected">–</div><div class="stat-label">Rejected</div></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="filter-btn active" onclick="setFilter('all',this)">All <span class="cnt" id="fc-all">0</span></button>
+        <button class="filter-btn" onclick="setFilter('pending',this)">Pending <span class="cnt" id="fc-pending">0</span></button>
+        <button class="filter-btn" onclick="setFilter('approved',this)">Approved <span class="cnt" id="fc-approved">0</span></button>
+        <button class="filter-btn" onclick="setFilter('rejected',this)">Rejected <span class="cnt" id="fc-rejected">0</span></button>
+        <div class="divider"></div>
+        <button class="filter-btn" onclick="setFilter('bike',this)">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:currentColor"><path d="M17.5 14c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM6.5 14C4.57 14 3 15.57 3 17.5S4.57 21 6.5 21s3.5-1.57 3.5-3.5S8.43 14 6.5 14zm0 5c-.83 0-1.5-.67-1.5-1.5S5.67 16 6.5 16s1.5.67 1.5 1.5S7.33 19 6.5 19z"/></svg>
+            Bike <span class="cnt" id="fc-bike">0</span>
+        </button>
+        <button class="filter-btn" onclick="setFilter('tour',this)">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:currentColor"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>
+            Tour <span class="cnt" id="fc-tour">0</span>
+        </button>
+    </div>
+
+    <div class="sort-wrap">
+        <span class="sort-label">Sort:</span>
+        <button class="sort-btn active" id="sb-submitted" onclick="setSort('submitted',this)">
+            <svg viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zm0-5h12v-2H3v2zm0-7v2h18V6H3z"/></svg> Submitted
+        </button>
+        <button class="sort-btn" id="sb-date" onclick="setSort('date',this)">
+            <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg> Rental/Tour Date
+        </button>
+        <button class="sort-btn" id="sb-dir" onclick="toggleDir()">
+            <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+            <span id="dir-label">Newest first</span>
+        </button>
+    </div>
+
+    <div class="list" id="list"></div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modal">
+    <div class="modal" id="modal-box">
+        <h3 id="modal-title"></h3>
+        <p id="modal-desc"></p>
+        <textarea id="modal-notes" placeholder="Optional message to customer…"></textarea>
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+            <button id="modal-go"></button>
+        </div>
+    </div>
+</div>
+
+<!-- OFF-SCREEN RECEIPT -->
+<div id="rc-wrap"><div id="rc"></div></div>
+
+<!-- Firebase v10.12.0 (matches booking.html & tour.html after fix) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+'use strict';
+
+// ── FIREBASE INIT (duplicate-app safe) ──────────────────────────────
+(function () {
+    if (!firebase.apps.length) {
+        firebase.initializeApp({
+            apiKey:            'AIzaSyCG1hOzMXJDQCcj-_OlmYBu9mV8xdN15bI',
+            authDomain:        'bobbys-motorbike-rental.firebaseapp.com',
+            projectId:         'bobbys-motorbike-rental',
+            storageBucket:     'bobbys-motorbike-rental.firebasestorage.app',
+            messagingSenderId: '22999361272',
+            appId:             '1:22999361272:web:3f2abf58faf2e8f8e3fd0d',
+            measurementId:     'G-6Y1830Q316'
+        });
+    }
+})();
+
+var auth = firebase.auth();
+var db   = firebase.firestore();
+
+// ── AUTH GUARD ───────────────────────────────────────────────────────
+setList(spinner('Checking login…'));
+
+auth.onAuthStateChanged(function (user) {
+    if (!user) { window.location.href = 'admin-login.html'; return; }
+    loadData();
+});
+
+function doLogout() {
+    auth.signOut().then(function () { window.location.href = 'admin-login.html'; });
+}
+
+// ── STATE ────────────────────────────────────────────────────────────
+var allDocs    = [];
+var curFilter  = 'all';
+var curSort    = 'submitted';
+var sortAsc    = false;
+var notifOn    = false;
+var prevIds    = null;
+var pendingAct = null;
+var _unsubBike = null;
+var _unsubTour = null;
+
+// ── LOAD DATA ────────────────────────────────────────────────────────
+function loadData() {
+    setList(spinner('Connecting to database…'));
+    if (_unsubBike) { _unsubBike(); _unsubBike = null; }
+    if (_unsubTour) { _unsubTour(); _unsubTour = null; }
+
+    Promise.all([
+        db.collection('bookings').get(),
+        db.collection('tour_bookings').get()
+    ]).then(function (results) {
+        var bikes = results[0].docs.map(function (d) {
+            return Object.assign({}, d.data(), { _id: d.id, _type: 'bike' });
+        });
+        var tours = results[1].docs.map(function (d) {
+            return Object.assign({}, d.data(), { _id: d.id, _type: 'tour' });
+        });
+        allDocs = bikes.concat(tours);
+        checkNew();
+        render();
+
+        // Live listeners — update only their respective slice
+        _unsubBike = db.collection('bookings').onSnapshot(function (snap) {
+            var tours = allDocs.filter(function (d) { return d._type === 'tour'; });
+            allDocs = snap.docs.map(function (d) {
+                return Object.assign({}, d.data(), { _id: d.id, _type: 'bike' });
+            }).concat(tours);
+            checkNew(); render();
+        }, function () {});
+
+        _unsubTour = db.collection('tour_bookings').onSnapshot(function (snap) {
+            var bikes = allDocs.filter(function (d) { return d._type === 'bike'; });
+            allDocs = bikes.concat(snap.docs.map(function (d) {
+                return Object.assign({}, d.data(), { _id: d.id, _type: 'tour' });
+            }));
+            checkNew(); render();
+        }, function () {});
+
+    }).catch(showError);
+}
+
+// ── RENDER ───────────────────────────────────────────────────────────
+function render() {
+    updateStats();
+    var docs = getFiltered();
+    if (!docs.length) {
+        setList('<div class="state-box"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg><h3>No bookings found</h3><p>New bookings appear here in real time</p></div>');
+        return;
+    }
+    setList(docs.map(buildCard).join(''));
+}
+
+function updateStats() {
+    var tot = allDocs.length;
+    var pen = allDocs.filter(function (d) { return d.status === 'pending'; }).length;
+    var app = allDocs.filter(function (d) { return d.status === 'approved'; }).length;
+    var rej = allDocs.filter(function (d) { return d.status === 'rejected'; }).length;
+    var bk  = allDocs.filter(function (d) { return d._type  === 'bike'; }).length;
+    var tr  = allDocs.filter(function (d) { return d._type  === 'tour'; }).length;
+    document.getElementById('s-total').textContent    = tot;
+    document.getElementById('s-pending').textContent  = pen;
+    document.getElementById('s-approved').textContent = app;
+    document.getElementById('s-rejected').textContent = rej;
+    document.getElementById('fc-all').textContent     = tot;
+    document.getElementById('fc-pending').textContent = pen;
+    document.getElementById('fc-approved').textContent = app;
+    document.getElementById('fc-rejected').textContent = rej;
+    document.getElementById('fc-bike').textContent    = bk;
+    document.getElementById('fc-tour').textContent    = tr;
+}
+
+function getFiltered() {
+    var list = allDocs.filter(function (d) {
+        if (curFilter === 'bike')     return d._type  === 'bike';
+        if (curFilter === 'tour')     return d._type  === 'tour';
+        if (curFilter === 'pending')  return d.status === 'pending';
+        if (curFilter === 'approved') return d.status === 'approved';
+        if (curFilter === 'rejected') return d.status === 'rejected';
+        return true;
+    });
+    list.sort(function (a, b) {
+        var av, bv;
+        if (curSort === 'date') {
+            av = new Date(a.startDate || a.tourDate || a.formattedDate || 0).getTime();
+            bv = new Date(b.startDate || b.tourDate || b.formattedDate || 0).getTime();
+        } else {
+            av = a.createdAt ? a.createdAt.toMillis() : 0;
+            bv = b.createdAt ? b.createdAt.toMillis() : 0;
+        }
+        return sortAsc ? av - bv : bv - av;
+    });
+    return list;
+}
+
+// ── BUILD CARD ───────────────────────────────────────────────────────
+function buildCard(d) {
+    var isBike  = d._type === 'bike';
+    var st      = d.status || 'pending';
+    var stLabel = st.charAt(0).toUpperCase() + st.slice(1);
+
+    var main = isBike ? [
+        cf('Customer', d.name),
+        cf('Bike',     '<span class="gold">' + esc(d.bikeName) + '</span>'),
+        cf('Date',     esc(d.formattedDate || '–')),
+        cf('Duration', esc(d.rentalDays) + 'd · ' + esc(d.numBikes) + ' bike(s)'),
+        cf('Total',    '<span class="gold">₱' + num(d.totalPrice) + '</span>'),
+        cf('Contact',  esc(d.phone))
+    ] : [
+        cf('Customer',  d.name),
+        cf('Date',      '<span class="teal">' + esc(d.formattedDate || '–') + '</span>'),
+        cf('Start Time', esc(d.startTime || '–')),
+        cf('Duration',  '8 Hours'),
+        cf('Contact',   esc(d.phone)),
+        cf('Requests',  esc(d.stops || 'None'))
+    ];
+
+    var extra = isBike ? [
+        cf('Gender',        d.gender),
+        cf('Nationality',   d.nationality),
+        cf('Age',           d.age),
+        cf('Accommodation', d.location),
+        cf('Helmets',       d.helmets),
+        cf('Deposit',       '₱' + num(d.depositAmount || d.bikePrice))
+    ] : [
+        cf('Gender',        d.gender),
+        cf('Nationality',   d.nationality),
+        cf('Age',           d.age),
+        cf('Accommodation', d.location),
+        cf('Duration',      '8 Hours'),
+        cf('Special Req.',  d.stops || 'None')
+    ];
+
+    var actions = '';
+    if (st === 'pending') {
+        actions =
+            '<button class="btn-approve" onclick="openModal(\'' + d._id + '\',\'' + d._type + '\',\'approve\')">' +
+            '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>Approve</button>' +
+            '<button class="btn-reject" onclick="openModal(\'' + d._id + '\',\'' + d._type + '\',\'reject\')">' +
+            '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>Reject</button>' +
+            delBtn(d._id, d._type);
+    } else {
+        var note = d.adminNotes ? '<span class="note-text">"' + esc(d.adminNotes) + '"</span>' : '';
+        var paidUI = '', rentalUI = '';
+        if (st === 'approved') {
+            paidUI = d.paid
+                ? '<span class="paid-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>Paid</span>'
+                : '<button class="btn-paid" onclick="markPaid(\'' + d._id + '\',\'' + d._type + '\')"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>Mark as Paid</button>';
+            if (d.paid && isBike && d.startDate && d.startTime && d.rentalDays) {
+                var rs = rentalStatus(d.startDate, d.startTime, d.rentalDays);
+                rentalUI = '<span class="rental-badge' + (rs.over ? ' over' : '') + '"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>' + rs.text + '</span>';
+            }
+        }
+        actions = note + paidUI + rentalUI +
+            '<button class="btn-dl" onclick="dlCard(\'' + d._id + '\',\'' + d._type + '\')">' +
+            '<svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download ' + stLabel + ' Card</button>' +
+            delBtn(d._id, d._type);
+    }
+
+    return '<div class="bcard ' + (isBike ? 'bike' : 'tour') + ' ' + st + '">' +
+        '<div class="bcard-top">' +
+            '<div class="bcard-top-left">' +
+                '<span class="badge-type ' + (isBike ? 'bike' : 'tour') + '">' + (isBike ? 'Bike' : 'Tour') + '</span>' +
+                '<span class="bid">' + esc(d.bookingID || '–') + '</span>' +
+                '<span class="badge-status ' + st + '">' + stLabel + '</span>' +
+            '</div>' +
+            '<div class="bcard-right">' +
+                '<span class="card-time">' + timeAgo(d.createdAt) + '</span>' +
+                '<button class="btn-expand" id="exp-' + d._id + '" onclick="toggleExp(\'' + d._id + '\')">' +
+                '<svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>More</button>' +
+            '</div>' +
+        '</div>' +
+        '<div class="bcard-body">' + main.join('') + '</div>' +
+        '<div class="extra" id="ex-' + d._id + '"><div class="extra-inner">' + extra.join('') + '</div>' +
+        (d.signature ? '<div style="padding:.7rem 1.1rem;border-top:1px solid rgba(255,255,255,0.06);">' +
+            '<div style="color:#888;font-size:.63rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem;">Signature</div>' +
+            '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(244,196,48,0.2);border-radius:8px;display:inline-block;padding:6px 10px;">' +
+            '<img src="' + esc(d.signature) + '" alt="Signature" style="max-height:55px;width:auto;max-width:100%;display:block;"></div>' +
+            '</div>' : '') +
+        '</div>' +
+        '<div class="bcard-actions">' + actions + '</div>' +
+    '</div>';
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────
+function cf(label, val) {
+    return '<div class="cf"><label>' + label + '</label><span>' + (val || '–') + '</span></div>';
+}
+function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function num(n)  { return Number(n || 0).toLocaleString(); }
+function setList(html) { document.getElementById('list').innerHTML = html; }
+function spinner(msg)  { return '<div class="spinner-wrap"><div class="spinner"></div><div style="color:var(--muted);font-size:.85rem;">' + msg + '</div></div>'; }
+function delBtn(id, type) {
+    return '<button class="btn-del" onclick="delBooking(\'' + id + '\',\'' + type + '\')" title="Delete"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>';
+}
+function timeAgo(ts) {
+    if (!ts || !ts.toMillis) return '–';
+    var m = Math.floor((Date.now() - ts.toMillis()) / 60000);
+    if (m < 1)  return 'Just now';
+    if (m < 60) return m + 'm ago';
+    var h = Math.floor(m / 60);
+    if (h < 24) return h + 'h ago';
+    return Math.floor(h / 24) + 'd ago';
+}
+function rentalStatus(startDate, startTime, days) {
+    try {
+        var p = startDate.split('-'), tp = startTime.split(':');
+        var start = new Date(+p[0], +p[1]-1, +p[2], +tp[0], +tp[1]).getTime();
+        var diff  = (start + (+days * 86400000)) - Date.now();
+        var over  = diff <= 0;
+        var ms    = Math.abs(diff);
+        var mins  = Math.floor(ms/60000), hrs = Math.floor(mins/60), d = Math.floor(hrs/24);
+        var text  = mins < 60  ? (over?'Over ':'Ends in ') + mins + ' min' + (mins!==1?'s':'')
+                  : hrs  < 24  ? (over?'Over ':'Ends in ') + hrs  + ' hr'  + (hrs !==1?'s':'')
+                  :               (over?'Over ':'Ends in ') + d    + ' day' + (d   !==1?'s':'') + (over?' ago':'');
+        return { text: text, over: over };
+    } catch(e) { return { text: 'Status unknown', over: false }; }
+}
+
+// ── EXPAND ───────────────────────────────────────────────────────────
+function toggleExp(id) {
+    var ex   = document.getElementById('ex-' + id);
+    var btn  = document.getElementById('exp-' + id);
+    var open = ex.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.innerHTML = open
+        ? '<svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>Less'
+        : '<svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>More';
+}
+
+// ── FILTERS / SORT ───────────────────────────────────────────────────
+function setFilter(f, btn) {
+    curFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    render();
+}
+function setSort(s, btn) {
+    curSort = s;
+    document.querySelectorAll('.sort-btn:not(#sb-dir)').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    render();
+}
+function toggleDir() {
+    sortAsc = !sortAsc;
+    document.getElementById('sb-dir').classList.toggle('active', sortAsc);
+    document.getElementById('dir-label').textContent = sortAsc ? 'Oldest first' : 'Newest first';
+    render();
+}
+
+// ── MODAL ────────────────────────────────────────────────────────────
+function openModal(id, type, action) {
+    pendingAct = { id: id, type: type, action: action };
+    var doc   = allDocs.find(function (d) { return d._id === id; });
+    var name  = doc ? doc.name : 'this customer';
+    var box   = document.getElementById('modal-box');
+    var notes = document.getElementById('modal-notes');
+    var go    = document.getElementById('modal-go');
+    notes.value = '';
+    if (action === 'approve') {
+        box.className = 'modal approve';
+        document.getElementById('modal-title').className   = 'g';
+        document.getElementById('modal-title').textContent = 'Approve Booking';
+        document.getElementById('modal-desc').textContent  = 'Confirm booking for ' + name + '. Add an optional message.';
+        notes.placeholder = 'e.g. See you on the day! Please bring your ID.';
+        go.className = 'btn-go-approve'; go.textContent = '✓ Confirm Approval';
+    } else {
+        box.className = 'modal reject';
+        document.getElementById('modal-title').className   = 'r';
+        document.getElementById('modal-title').textContent = 'Reject Booking';
+        document.getElementById('modal-desc').textContent  = 'Reject booking for ' + name + '. Please give a reason.';
+        notes.placeholder = 'e.g. Sorry, the bike is not available on that date.';
+        go.className = 'btn-go-reject'; go.textContent = '✕ Confirm Rejection';
+    }
+    go.onclick = confirmAction;
+    document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+    pendingAct = null;
+}
+
+document.getElementById('modal').addEventListener('click', function (e) {
+    if (e.target === this) closeModal();
+});
+
+function confirmAction() {
+    if (!pendingAct) return;
+    var go     = document.getElementById('modal-go');
+    var col    = pendingAct.type === 'bike' ? 'bookings' : 'tour_bookings';
+    var status = pendingAct.action === 'approve' ? 'approved' : 'rejected';
+    var notes  = document.getElementById('modal-notes').value.trim();
+    go.disabled = true; go.textContent = 'Saving…';
+    db.collection(col).doc(pendingAct.id).update({
+        status:      status,
+        adminNotes:  notes,
+        processedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function () {
+        closeModal();
+    }).catch(function (e) {
+        go.disabled = false; go.textContent = 'Try Again';
+        console.error(e);
+    });
+}
+
+// ── DELETE & MARK PAID ───────────────────────────────────────────────
+function delBooking(id, type) {
+    if (!confirm('Delete this booking? This cannot be undone.')) return;
+    db.collection(type === 'bike' ? 'bookings' : 'tour_bookings').doc(id).delete()
+        .catch(function (e) { alert('Delete failed: ' + e.message); });
+}
+
+function markPaid(id, type) {
+    if (!confirm('Mark this booking as paid?')) return;
+    db.collection(type === 'bike' ? 'bookings' : 'tour_bookings').doc(id).update({
+        paid:   true,
+        paidAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function (e) { alert('Error: ' + e.message); });
+}
+
+// ── NOTIFICATIONS ────────────────────────────────────────────────────
+function checkNew() {
+    var ids = allDocs.map(function (d) { return d._id; }).sort().join(',');
+    if (prevIds === null) { prevIds = ids; return; }
+    if (ids !== prevIds && notifOn) {
+        var old = prevIds.split(',');
+        if (allDocs.some(function (d) { return !old.includes(d._id); })) pingSound();
+    }
+    prevIds = ids;
+}
+
+function toggleNotif() {
+    notifOn = !notifOn;
+    var btn = document.getElementById('bell-btn');
+    btn.classList.toggle('on', notifOn);
+    btn.title = notifOn ? 'Notifications ON' : 'Notifications OFF';
+    if (notifOn) pingSound();
+}
+
+function pingSound() {
+    try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [523, 659, 784].forEach(function (freq, i) {
+            var o = ctx.createOscillator(), g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.type = 'sine'; o.frequency.value = freq;
+            var t = ctx.currentTime + i * 0.13;
+            g.gain.setValueAtTime(0, t);
+            g.gain.linearRampToValueAtTime(0.18, t + 0.04);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.38);
+            o.start(t); o.stop(t + 0.4);
+        });
+        var bell = document.getElementById('bell-btn');
+        bell.classList.add('ring');
+        setTimeout(function () { bell.classList.remove('ring'); }, 700);
+    } catch(e) {}
+}
+
+// ── DOWNLOAD RECEIPT CARD ────────────────────────────────────────────
+function dlCard(id, type) {
+    // 'doc' avoids shadowing the global esc() helper named 'x' in the original
+    var doc = allDocs.find(function (doc) { return doc._id === id; });
+    if (!doc) return;
+    buildReceipt(doc);
+    setTimeout(function () {
+        html2canvas(document.getElementById('rc'), {
+            backgroundColor: doc.status === 'approved' ? '#071410' : '#100a0a',
+            scale: 2, useCORS: true, logging: false, width: 680
+        }).then(function (canvas) {
+            var a = document.createElement('a');
+            a.href     = canvas.toDataURL('image/png');
+            a.download = 'BMR-' + (doc.status === 'approved' ? 'Approved' : 'Rejected') + '-' + esc(doc.bookingID || id) + '.png';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        });
+    }, 180);
+}
+
+function buildReceipt(d) {
+    var ok     = d.status === 'approved';
+    var isBike = d._type  === 'bike';
+    var today  = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    var note   = d.adminNotes || (ok ? 'Your booking is confirmed! See you soon.' : 'We are unable to accommodate your request at this time.');
+
+    var stBg    = ok ? 'rgba(37,211,102,.15)'  : 'rgba(255,107,107,.15)';
+    var stBdr   = ok ? 'rgba(37,211,102,.5)'   : 'rgba(255,107,107,.5)';
+    var stColor = ok ? '#25D366'               : '#ff6b6b';
+    var stText  = ok ? 'Approved ✓'            : 'Rejected ✕';
+
+    var lblBg  = ok ? 'rgba(37,211,102,.1)'  : 'rgba(255,107,107,.1)';
+    var lblBdr = ok ? 'rgba(37,211,102,.35)' : 'rgba(255,107,107,.35)';
+    var lblClr = ok ? '#25D366'              : '#ff6b6b';
+    var lblTxt = ok ? 'Booking Confirmed'    : 'Booking Rejected';
+
+    // ✅ Status-conditional verified badge
+    var verifiedBadge = ok
+        ? '<div style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.35);border-radius:20px;padding:4px 11px;margin-top:8px">' +
+          '<svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:#25D366;flex-shrink:0"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>' +
+          '<span style="color:#25D366;font-size:.63rem;font-weight:800;text-transform:uppercase;letter-spacing:1px">Verified by BMR Team</span></div>'
+        : '<div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);border-radius:20px;padding:4px 11px;margin-top:8px">' +
+          '<svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:#ff6b6b;flex-shrink:0"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>' +
+          '<span style="color:#ff6b6b;font-size:.63rem;font-weight:800;text-transform:uppercase;letter-spacing:1px">Not Accepted by BMR Team</span></div>';
+
+    var deliveryLine = (isBike && d.deliveryOption)
+        ? '<div style="color:#aaa;font-size:.82rem">' + esc(d.deliveryOption === 'delivery' ? 'Delivery · +₱50' : 'Pickup · Free') + '</div>'
+        : '';
+
+    var breakdown = isBike
+        ? '₱' + esc(d.bikePrice) + ' × ' + esc(d.rentalDays) + ' day' + (+d.rentalDays>1?'s':'') + ' × ' + esc(d.numBikes) + ' bike' + (+d.numBikes>1?'s':'') + (d.deliveryFee>0?' + ₱50 delivery':'')
+        : '';
+
+    var depositNotice = isBike
+        ? '<div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:8px;padding:6px 10px"><div style="color:#ff6b6b;font-size:.72rem;font-weight:700">✗ Deposit is non-refundable</div><div style="color:#888;font-size:.68rem;margin-top:2px">Payment transaction fees are non-recoverable</div></div>'
+        : '';
+
+    var msgSection = note
+        ? '<div style="margin:0 32px 20px;background:rgba(244,196,48,.05);border:1px solid rgba(244,196,48,.15);border-radius:10px;padding:12px 16px"><div style="color:#888;font-size:.63rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px">Message from BMR Team</div><div style="color:#ddd;font-size:.85rem;font-style:italic;line-height:1.6">"' + esc(note) + '"</div></div>'
+        : '';
+
+    var tear = '<div style="display:flex;align-items:center;padding:0 24px"><div style="width:20px;height:20px;background:#06090f;border-radius:50%;margin-right:-10px;flex-shrink:0;border-right:1px solid rgba(244,196,48,.15)"></div><div style="flex:1;border-top:2px dashed rgba(255,255,255,.08);margin:0 6px"></div><div style="width:20px;height:20px;background:#06090f;border-radius:50%;margin-left:-10px;flex-shrink:0;border-left:1px solid rgba(244,196,48,.15)"></div></div>';
+
+    var rentalDetails = isBike
+        ? '<div style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:6px">' + esc(d.bikeName||'–') + '</div>' +
+          '<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc(d.numBikes + ' bike' + (+d.numBikes>1?'s':'')) + '</div>' +
+          '<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc(d.formattedDate||'') + '</div>' +
+          '<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc((d.startTime||'') + ' · ' + (d.rentalDays||'') + ' day' + (+d.rentalDays>1?'s':'')) + '</div>' +
+          '<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc((d.helmets||'0') + ' helmet' + (+d.helmets!==1?'s':'')) + '</div>' + deliveryLine
+        : '<div style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:6px">Land Tour Package</div>' +
+          '<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc(d.formattedDate||'') + '</div>' +
+          '<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc(d.startTime||'') + ' · 8 Hours</div>' +
+          '<div style="color:#aaa;font-size:.82rem">' + esc(d.stops||'Standard stops') + '</div>';
+
+    document.getElementById('rc').innerHTML = [
+        '<div style="background:#0b0f1a;overflow:hidden;border:1px solid rgba(244,196,48,.2)">',
+        '<div style="height:5px;background:linear-gradient(90deg,#f4c430,#ffd700,#f4a800,#f4c430)"></div>',
+
+        // Header
+        '<div style="padding:28px 32px 22px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#0f1520,#0b0f1a);border-bottom:1px solid rgba(244,196,48,.12)">',
+            '<div style="display:flex;align-items:center;gap:14px">',
+                '<img src="BMR.png" alt="BMR" style="width:54px;height:54px;border-radius:10px;object-fit:contain;border:1px solid rgba(244,196,48,.25);background:rgba(244,196,48,.06);padding:3px">',
+                '<div><div style="color:#fff;font-size:1.05rem;font-weight:800">Bobby\'s Motorbike Rental</div><div style="color:#888;font-size:.72rem;letter-spacing:1px;text-transform:uppercase">Santa Fe, Bantayan Island</div></div>',
+            '</div>',
+            '<div style="text-align:right"><div style="background:' + lblBg + ';border:1px solid ' + lblBdr + ';color:' + lblClr + ';font-size:.65rem;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">' + lblTxt + '</div><div style="color:#555;font-size:.7rem">' + esc(today) + '</div></div>',
+        '</div>',
+
+        // Booking ID + status
+        '<div style="padding:18px 32px;background:linear-gradient(135deg,rgba(244,196,48,.1),rgba(255,215,0,.05));border-bottom:1px solid rgba(244,196,48,.15);display:flex;align-items:center;justify-content:space-between">',
+            '<div><div style="color:#888;font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">Booking ID</div><div style="color:#f4c430;font-size:1.5rem;font-weight:900;letter-spacing:2px">' + esc(d.bookingID||'–') + '</div>' + verifiedBadge + '</div>',
+            '<div style="text-align:right"><div style="color:#888;font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">Status</div><div style="background:' + stBg + ';border:1px solid ' + stBdr + ';color:' + stColor + ';font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">' + stText + '</div></div>',
+        '</div>',
+
+        tear,
+
+        // Customer + Rental
+        '<div style="padding:22px 32px;display:grid;grid-template-columns:1fr 1px 1fr;gap:0">',
+            '<div style="padding-right:24px"><div style="color:#f4c430;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px">Customer</div><div style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:6px">' + esc(d.name||'–') + '</div><div style="color:#aaa;font-size:.82rem;margin-bottom:3px">' + esc((d.gender||'') + (d.nationality?' · '+d.nationality:'')) + '</div>' + (d.age?'<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">Age ' + esc(d.age) + '</div>':'') + (d.location?'<div style="color:#aaa;font-size:.82rem;margin-bottom:3px">Staying: ' + esc(d.location) + '</div>':'') + '<div style="color:#aaa;font-size:.82rem">' + esc(d.phone||'') + '</div></div>',
+            '<div style="background:rgba(255,255,255,.07)"></div>',
+            '<div style="padding-left:24px"><div style="color:#f4c430;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px">' + (isBike ? 'Bike &amp; Rental' : 'Tour Details') + '</div>' + rentalDetails + '</div>',
+        '</div>',
+
+        tear,
+
+        // Deposit + Total
+        '<div style="padding:22px 32px;display:grid;grid-template-columns:1fr 1px 1fr;gap:0">',
+            '<div style="padding-right:24px"><div style="color:#f4c430;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">Reservation Deposit</div><div style="color:#fff;font-size:1.25rem;font-weight:800;margin-bottom:8px">₱' + num(d.depositAmount||d.bikePrice) + (+d.numBikes>1?' × '+d.numBikes:'') + '</div>' + depositNotice + '</div>',
+            '<div style="background:rgba(255,255,255,.07)"></div>',
+            '<div style="padding-left:24px;display:flex;flex-direction:column;justify-content:center"><div style="color:#f4c430;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">Total Amount</div><div style="color:#fff;font-size:2rem;font-weight:900;line-height:1;margin-bottom:6px">₱' + num(d.totalPrice) + '</div><div style="color:#666;font-size:.77rem;line-height:1.5">' + breakdown + '</div></div>',
+        '</div>',
+
+        msgSection,
+
+        // ID notice
+        '<div style="margin:0 32px 20px;padding:14px 16px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:10px;display:flex;align-items:flex-start;gap:10px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fb923c;flex-shrink:0;margin-top:1px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><div style="color:#f5ba8a;font-size:.77rem;line-height:1.5"><strong style="color:#fb923c">ID Required on Pickup:</strong> Please bring a valid Government ID (National ID, Postal ID, Voter\'s ID, PhilHealth, or TIN). Passport and Driver\'s License are NOT accepted.</div></div>',
+
+        // Signature
+        (d.signature ? '<div style="margin:0 32px 20px;"><div style="color:#888;font-size:.63rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Customer Signature</div><div style="background:rgba(255,255,255,.03);border:1px solid rgba(244,196,48,.2);border-radius:8px;display:inline-block;padding:6px 10px;"><img src="' + esc(d.signature) + '" alt="Signature" style="max-height:55px;width:auto;max-width:580px;display:block;"></div></div>' : ''),
+
+        // Footer
+        '<div style="padding:12px 32px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;background:#0b0f1a"><div style="color:#555;font-size:.7rem">Bobby\'s Motorbike Rental · bobbymotorental.xyz</div><div style="color:#25D366;font-size:.7rem;font-weight:700">+63 907 352 7234</div></div>',
+        '<div style="height:3px;background:linear-gradient(90deg,#f4c430,#ffd700,#f4c430)"></div>',
+        '</div>'
+    ].join('');
+}
+
+// ── ERROR ────────────────────────────────────────────────────────────
+function showError(err) {
+    var code = err ? (err.code || '') : '';
+    var msg  = code === 'permission-denied' ? 'Permission denied — check your Firestore Security Rules.'
+             : code === 'timeout'           ? 'Database took too long to respond.'
+             :                               'Could not connect to database. (' + (code || 'unknown') + ')';
+    setList('<div class="state-box"><svg viewBox="0 0 24 24" style="fill:#ff6b6b;opacity:.7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><h3 style="color:#ff6b6b">Connection Failed</h3><p style="font-size:.83rem;max-width:360px;margin:.5rem auto;line-height:1.6">' + msg + '</p><button onclick="loadData()" style="margin-top:1rem;background:rgba(244,196,48,.1);border:1px solid rgba(244,196,48,.3);color:#f4c430;padding:.5rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:700">↻ Retry</button></div>');
+}
+</script>
+</body>
+</html>

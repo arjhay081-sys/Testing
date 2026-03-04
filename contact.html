@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6Y1830Q316"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6Y1830Q316');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Bobby's Motorbike Rental – Santa Fe, Bantayan Island</title>
+    <meta name="description" content="Contact Bobby's Motorbike Rental via WhatsApp: +63 907 352 7234. Located in Barangay Talisay, Santa Fe, Bantayan Island, Cebu. Open daily 6AM–9PM.">
+    <meta name="keywords" content="contact Bobby's Rental Bantayan, WhatsApp motorbike Bantayan, Santa Fe Bantayan scooter contact, Talisay Santa Fe bike rental shop">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            text-decoration: none;
+        }
+
+        .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links .book-btn {
+            background: linear-gradient(135deg, #f4c430 0%, #ffd700 100%);
+            color: #000000;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f4c430;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem 4rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f4c430 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .page-header p {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        /* WhatsApp Contact Card */
+        .whatsapp-card {
+            background: linear-gradient(135deg, #1a3a1a 0%, #0a1a0a 100%);
+            border: 3px solid #25D366;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 60px rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-card svg {
+            width: 80px;
+            height: 80px;
+            fill: #25D366;
+            margin-bottom: 2rem;
+        }
+
+        .whatsapp-card h2 {
+            color: #25D366;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .whatsapp-card p {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .whatsapp-number {
+            background: #25D366;
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 1rem 0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-number:hover {
+            background: #1ea952;
+            transform: scale(1.05);
+        }
+
+        .warning {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+
+        .warning p {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        /* Contact Grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px solid #333;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(244, 196, 48, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            border-color: #f4c430;
+            transform: translateY(-5px);
+        }
+
+        .contact-card svg {
+            width: 60px;
+            height: 60px;
+            fill: #f4c430;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-card h3 {
+            color: #f4c430;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card p {
+            color: #cccccc;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .contact-card .highlight {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        /* Map Section */
+        .map-section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px solid #333;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(244, 196, 48, 0.1);
+        }
+
+        .map-section h2 {
+            color: #f4c430;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #333;
+            height: 400px;
+        }
+
+        .map-link {
+            display: block;
+            text-align: center;
+            color: #f4c430;
+            text-decoration: none;
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .map-link:hover {
+            color: #ffd700;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 2rem 0;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #333;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 4px;
+        }
+        .menu-toggle span {
+            width: 25px; height: 3px;
+            background: #f4c430;
+            border-radius: 2px;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+
+            .page-header h1 { font-size: 2rem; }
+            .whatsapp-card { padding: 2rem; }
+            .whatsapp-number { font-size: 1.4rem; padding: 0.8rem 1.5rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: rgba(6,9,15,0.96);
+                backdrop-filter: blur(30px);
+                flex-direction: column;
+                padding: 2rem;
+                border-top: 1px solid rgba(244,196,48,0.2);
+                gap: 1.2rem;
+                z-index: 999;
+            }
+            .nav-links.active { display: flex; }
+            .menu-toggle { display: flex; }
+            header { position: relative; }
+        
+}
+
+        @media (max-width: 480px) {
+
+            .article-header h1, .page-header h1, h1 {
+                font-size: 1.5rem !important;
+            }
+            .article-container, .container {
+                padding: 0 1rem 2rem 1rem !important;
+            }
+        
+}
+
+/* ── Keyframes ── */
+        
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25%      { transform: translateX(-5px); }
+            75%      { transform: translateX(5px); }
+        }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-10px); }
+        }
+        @keyframes gradient-shift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        
+        
+        @keyframes orbFloat1 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%      { transform: translate(80px,60px) scale(1.12); }
+            66%      { transform: translate(-50px,110px) scale(0.9); }
+        }
+        @keyframes orbFloat2 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%      { transform: translate(-70px,-90px) scale(1.18); }
+            66%      { transform: translate(90px,-50px) scale(0.88); }
+        }
+        
+        @keyframes headerGlow {
+            0%,100% { box-shadow: 0 4px 30px rgba(244,196,48,0.08); }
+            50%      { box-shadow: 0 4px 50px rgba(244,196,48,0.18); }
+        }
+        @keyframes waPulse {
+            0%,100% { box-shadow: 0 20px 60px rgba(37,211,102,0.2); }
+            50%      { box-shadow: 0 20px 80px rgba(37,211,102,0.4); }
+        }
+
+        /* ── Background ── */
+        body {
+            background: #06090f !important;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            width: 700px; height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(244,196,48,0.10) 0%, transparent 65%);
+            top: -200px; left: -150px;
+            animation: orbFloat1 14s ease-in-out infinite;
+            pointer-events: none; z-index: -1;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(20,90,200,0.09) 0%, transparent 65%);
+            bottom: -120px; right: -120px;
+            animation: orbFloat2 18s ease-in-out infinite;
+            pointer-events: none; z-index: -1;
+        }
+
+        /* ── Glass header ── */
+        header {
+            background: rgba(6,9,15,0.65) !important;
+            backdrop-filter: blur(28px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+            border-bottom: 1px solid rgba(244,196,48,0.15) !important;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.4) !important;
+        }
+
+        /* ── Animated Book Now nav btn ── */
+        .nav-links .book-btn {
+            background: linear-gradient(135deg, #f4c430 0%, #ffd700 50%, #f4c430 100%) !important;
+            background-size: 200% 200% !important;
+            animation: gradient-shift 3s ease infinite;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease !important;
+        }
+        .nav-links .book-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transform: translate(-50%,-50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        .nav-links .book-btn:active::before {
+            width: 200px; height: 200px;
+        }
+        .nav-links .book-btn:hover {
+            transform: scale(1.08) translateY(-2px) !important;
+            box-shadow: 0 10px 30px rgba(244,196,48,0.6) !important;
+            color: #000 !important;
+        }
+
+        /* ── Logo hover ── */
+        .logo img {
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover { transform: scale(1.05); }
+
+        /* ── Page header entrance ── */
+        .page-header {
+            animation: fadeUp 0.7s ease both;
+        }
+        .page-header h1 {
+            background-size: 200% auto !important;
+            animation: fadeUp 0.7s ease 0.1s both, shimmer 5s linear infinite !important;
+        }
+        .page-header p { animation: fadeUp 0.7s ease 0.2s both; }
+
+        /* ── Glass cards ── */
+        .contact-card,
+        .map-section {
+            background: rgba(255,255,255,0.04) !important;
+            backdrop-filter: blur(24px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45),
+                        inset 0 1px 0 rgba(255,255,255,0.07) !important;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.34,1.2,0.64,1),
+                        box-shadow 0.35s ease,
+                        border-color 0.35s ease !important;
+        }
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(244,196,48,0.07), transparent);
+            transition: left 0.55s ease;
+            pointer-events: none;
+        }
+        .contact-card:hover::before { left: 150%; }
+        .contact-card:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(244,196,48,0.45) !important;
+            transform: translateY(-6px) scale(1.01) !important;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.5),
+                        inset 0 1px 0 rgba(255,255,255,0.12),
+                        0 0 30px rgba(244,196,48,0.12) !important;
+        }
+
+        /* ── WhatsApp card ── */
+        .whatsapp-card {
+            background: rgba(0,30,10,0.5) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            border: 2px solid rgba(37,211,102,0.4) !important;
+            box-shadow: 0 0 60px rgba(37,211,102,0.12) !important;
+            animation: waPulse 4s ease-in-out infinite;
+        }
+
+        /* ── WhatsApp number button ── */
+        .whatsapp-number {
+            background: linear-gradient(135deg, #25D366 0%, #1ebe57 100%) !important;
+            background-size: 200% 200% !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease !important;
+        }
+        .whatsapp-number:hover {
+            transform: translateY(-4px) scale(1.06) !important;
+            box-shadow: 0 15px 40px rgba(37,211,102,0.55) !important;
+            animation: bounce 1s ease infinite;
+        }
+
+        /* ── Warning box ── */
+        .warning {
+            background: rgba(255,107,107,0.08) !important;
+            border-left: 4px solid rgba(255,107,107,0.6) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        /* ── Map border ── */
+        .map-container {
+            border: 1px solid rgba(244,196,48,0.25) !important;
+            box-shadow: 0 0 30px rgba(244,196,48,0.06);
+        }
+
+        /* ── Quick links CTA ── */
+        .quick-cta {
+            background: rgba(255,255,255,0.03) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(244,196,48,0.2) !important;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+            animation: headerGlow 4s ease infinite;
+        }
+
+        /* ── Book Now CTA button ── */
+        .cta-book-btn {
+            background: linear-gradient(135deg, #f4c430 0%, #ffd700 50%, #f4c430 100%) !important;
+            background-size: 200% 200% !important;
+            animation: gradient-shift 3s ease infinite;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease !important;
+        }
+        .cta-book-btn:hover {
+            transform: translateY(-4px) scale(1.06) !important;
+            box-shadow: 0 15px 40px rgba(244,196,48,0.6) !important;
+        }
+        .cta-book-btn:active { animation: shake 0.3s ease; }
+
+        /* ── Footer ── */
+        footer {
+            background: rgba(6,9,15,0.8) !important;
+            backdrop-filter: blur(24px) !important;
+            border-top: 1px solid rgba(255,255,255,0.07) !important;
+        }
+
+        /* ── Scroll hidden (JS reveals) ── */
+        .scroll-hidden {
+            opacity: 0;
+            transform: translateY(40px) scale(0.97);
+        }
+
+        /* ===== INTER FONT OVERRIDE ===== */
+        body, html, * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        }
+        /* ===== END INTER FONT ===== */
+        </style>
+
+    <!-- ===== BMR UPGRADES: animations + glass ===== -->
+    
+    <!-- ===== END UPGRADES ===== -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Bobby's Motorbike Rental">
+    <meta property="og:url" content="https://bobbymotorental.xyz/contact.html">
+    <meta property="og:title" content="Contact Bobby's Motorbike Rental – Santa Fe, Bantayan">
+    <meta property="og:description" content="WhatsApp: +63 907 352 7234. Open 6AM–9PM daily. Barangay Talisay, Santa Fe, Bantayan Island.">
+    <meta property="og:image" content="https://bobbymotorental.xyz/BMR.png">
+    <meta property="og:locale" content="en_PH">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Contact Bobby's Motorbike Rental – Santa Fe, Bantayan">
+    <meta name="twitter:description" content="WhatsApp: +63 907 352 7234. Open 6AM–9PM daily. Barangay Talisay, Santa Fe, Bantayan Island.">
+    <meta name="twitter:image" content="https://bobbymotorental.xyz/BMR.png">
+    <link rel="canonical" href="https://bobbymotorental.xyz/contact.html">
+
+    <!-- Local Business Structured Data for Google -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"LocalBusiness","name":"Bobby's Motorbike Rental","alternateName":"BMR Bantayan","description":"Affordable scooter and motorbike rentals in Santa Fe, Bantayan Island, Cebu, Philippines.","url":"https://bobbymotorental.xyz","telephone":"+639073527234","priceRange":"₱₱","image":"https://bobbymotorental.xyz/BMR.png","address":{"@type":"PostalAddress","streetAddress":"Barangay Talisay","addressLocality":"Santa Fe","addressRegion":"Cebu","addressCountry":"PH","postalCode":"6047"},"geo":{"@type":"GeoCoordinates","latitude":11.1711,"longitude":123.7717},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"06:00","closes":"21:00"},"sameAs":["https://maps.app.goo.gl/bdDCmMhbLoGesXyy6"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Rental Services","itemListElement":[{"@type":"Offer","name":"Honda Click 125i Rental","price":"250","priceCurrency":"PHP","unitText":"DAY"},{"@type":"Offer","name":"Honda Beat Rental","price":"250","priceCurrency":"PHP","unitText":"DAY"},{"@type":"Offer","name":"Yamaha Fazzio Rental","price":"350","priceCurrency":"PHP","unitText":"DAY"},{"@type":"Offer","name":"Bantayan Island Land Tour","price":"840","priceCurrency":"PHP","description":"8-hour land tour with guide, driver, scooter and helmet included"}]}}
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="BMR.png" alt="Bobby's Motorbike Rental – Scooter Hire Santa Fe Bantayan Island">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="tour.html">Tours</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="booking.html" class="book-btn">Book Now</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Contact Us</h1>
+            <p>We're here to help you explore Bantayan Island!</p>
+        </div>
+
+        <!-- WhatsApp Contact -->
+        <div class="whatsapp-card">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            <h2>Contact Us via WhatsApp ONLY</h2>
+            <p>For all inquiries, bookings, and support, please reach us exclusively through WhatsApp.</p>
+            
+            <a href="https://wa.me/639073527234" class="whatsapp-number" target="_blank">
+                +63 907 352 7234
+            </a>
+
+            <div class="warning">
+                <p>WARNING: We DO NOT accept Phone Calls, SMS, Facebook Messenger, or other messaging apps!</p>
+            </div>
+
+            <p style="color: #25D366; font-weight: 600; margin-top: 1.5rem;">
+                Click the number above to open WhatsApp or use our <a href="booking.html" style="color: #25D366; text-decoration: underline;">booking form</a>
+            </p>
+        </div>
+
+        <!-- Contact Information Grid -->
+        <div class="contact-grid">
+            <!-- Shop Hours -->
+            <div class="contact-card">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                <h3>Shop Hours</h3>
+                <p class="highlight">6:00 AM - 9:00 PM</p>
+                <p>Open Daily, 7 Days a Week</p>
+                <p style="margin-top: 1rem; color: #888;">Walk-ins welcome during operating hours</p>
+            </div>
+
+            <!-- Location -->
+            <div class="contact-card">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                <h3>Our Location</h3>
+                <p class="highlight">Barangay Talisay</p>
+                <p>Santa Fe, Bantayan Island</p>
+                <p>Cebu, Philippines</p>
+                <p style="margin-top: 1rem; color: #888;">Easy to find, convenient access</p>
+            </div>
+
+            <!-- Owner Info -->
+            <div class="contact-card">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <h3>Owner</h3>
+                <p class="highlight">Rogelito G. Cabrera</p>
+                <p>Barangay Captain of Talisay</p>
+                <p style="margin-top: 1rem; color: #888;">Community leader and trusted business owner</p>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <h2>Find Us on the Map</h2>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d981.2374757157537!2d123.77169476952814!3d11.171092499372396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a54fdb4e4ae88d%3A0xf38e88f54e4ae88d!2sBantayan%20Island%2C%20Cebu!5e0!3m2!1sen!2sph!4v1234567890123!5m2!1sen!2sph" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <a href="https://maps.app.goo.gl/bdDCmMhbLoGesXyy6" target="_blank" class="map-link">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;fill:currentColor;vertical-align:middle;margin-right:6px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Open in Google Maps →
+            </a>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="quick-cta" style="text-align: center; margin-top: 3rem; padding: 2rem; border-radius: 20px;">
+            <h3 style="color: #f4c430; margin-bottom: 1.5rem; font-size: 1.8rem;">Ready to Explore?</h3>
+            <p style="color: #cccccc; margin-bottom: 2rem; font-size: 1.1rem;">Book your motorbike now and start your Bantayan Island adventure!</p>
+            <a href="booking.html" class="cta-book-btn" style="color: #000000; padding: 1rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.2rem; display: inline-block;">
+                Book Now!
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Bobby's Motorbike Rental. All rights reserved.</p>
+        <p>Owned by Rogelito G. Cabrera, Barangay Captain of Talisay, Santa Fe</p>
+        <p style="margin-top: 1.5rem;">
+            <a href="index.html" style="color: #888; text-decoration: none; margin: 0 1rem;">Home</a>
+            <a href="about.html" style="color: #888; text-decoration: none; margin: 0 1rem;">About Us</a>
+            <a href="tour.html" style="color: #888; text-decoration: none; margin: 0 1rem;">Tours</a>
+            <a href="blog.html" style="color: #888; text-decoration: none; margin: 0 1rem;">Blog</a>
+            <a href="faq.html" style="color: #888; text-decoration: none; margin: 0 1rem;">FAQ</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            <a href="privacy-policy.html" style="color: #666; text-decoration: none; margin: 0 0.75rem;">Privacy Policy</a>
+            <a href="terms.html" style="color: #666; text-decoration: none; margin: 0 0.75rem;">Terms & Conditions</a>
+            <a href="terms.html" style="color:#666;text-decoration:none;margin:0 0.75rem;transition:color 0.3s;" onmouseover="this.style.color='#f4c430'" onmouseout="this.style.color='#666'">Booking &amp; Refund Policy</a>
+        </p>
+    </footer>
+
+    <script>
+        /* Mobile menu */
+        var toggle = document.getElementById('menuToggle');
+        var navLinks = document.querySelector('.nav-links');
+        if (toggle) {
+            toggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(function(l) {
+                l.addEventListener('click', function() { navLinks.classList.remove('active'); });
+            });
+        }
+
+        /* Sticky header style change */
+        window.addEventListener('scroll', function() {
+            var h = document.querySelector('header');
+            if (h) h.style.background = window.scrollY > 50
+                ? 'rgba(0,0,0,0.95)'
+                : 'rgba(6,9,15,0.65)';
+        });
+
+        /* Third animated orb */
+        (function() {
+            var orb = document.createElement('div');
+            orb.style.cssText = [
+                'position:fixed','width:400px','height:400px','border-radius:50%',
+                'background:radial-gradient(circle,rgba(244,196,48,0.06) 0%,transparent 65%)',
+                'top:45%','right:-100px',
+                'animation:orbFloat3 20s ease-in-out infinite',
+                'pointer-events:none','z-index:-1'
+            ].join(';');
+            document.body.appendChild(orb);
+        })();
+
+        /* Scroll reveal */
+        (function() {
+            var sel = '.contact-card, .map-section, .whatsapp-card, .quick-cta';
+            var els = document.querySelectorAll(sel);
+            if (!els.length) return;
+            els.forEach(function(el) { el.classList.add('scroll-hidden'); });
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var el = entry.target;
+                        var siblings = el.parentElement
+                            ? Array.from(el.parentElement.children).filter(function(c){ return c.classList.contains('scroll-hidden') || c === el; })
+                            : [el];
+                        var idx = siblings.indexOf(el);
+                        var delay = (idx % 6) * 0.08;
+                        el.classList.remove('scroll-hidden');
+                        el.style.animation = 'cardReveal 0.55s ease ' + delay + 's both';
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+            els.forEach(function(el) { observer.observe(el); });
+        })();
+    </script>
+</body>
+</html>
